@@ -1,0 +1,8 @@
+**/__pycache__
+.vscode
+*lock*
+study
+model
+.DS_Store
+data
+.huggingface_cache
