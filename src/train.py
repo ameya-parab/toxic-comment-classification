@@ -39,7 +39,7 @@ def run_training(
 
     max_metrics = 0
 
-    for epoch in epochs:
+    for epoch in range(epochs):
 
         running_train_loss = 0.0
         running_train_examples_count = 0
