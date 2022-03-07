@@ -3,5 +3,6 @@
 *lock*
 study
 model
+data
 .DS_Store
 .huggingface_cache
