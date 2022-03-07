@@ -67,8 +67,8 @@ def run_training(
             if batch % 100 == 0:
 
                 print(
-                    f"Epoch: [{epoch + 1}/{epochs}], "
-                    f"Batch: [{batch + 1}]/[{len(train_dataloader)}], "
+                    f"Epoch: [{epoch + 1} / {epochs}], "
+                    f"Batch: [{batch + 1} / {len(train_dataloader)}], "
                     f"Loss: {round(running_train_loss / running_train_examples_count, 4)}"
                 )
 
@@ -76,7 +76,7 @@ def run_training(
         validation_output = evaluate(model=model, dataloader=valid_dataloader)
 
         print(
-            f"Epoch Loss: {round(running_train_loss / len(train_dataloader), 4)}, "
+            f"Epoch {epoch + 1} Loss: {round(running_train_loss / len(train_dataloader), 4)}, "
             f"Valid Accuracy: {round(validation_output['accuracy'], 2)}, ",
             f"F1_Micro: {round(validation_output['f1_micro'], 2)}, ",
             f"F1_Macro: {round(validation_output['f1_macro'], 2)}",
