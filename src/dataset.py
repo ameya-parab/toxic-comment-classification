@@ -32,14 +32,14 @@ class Comments(Dataset):
             )
             self.dataset = self.dataset.assign(
                 targets=self.dataset[self.dataset.columns[2:]].values.tolist()
-            )[:200]
+            )
         else:
             self.dataset = pd.read_csv(os.path.join(DATA_DIR, "test.csv")).reset_index(
                 drop=True
             )
             self.dataset = self.dataset.assign(
                 targets=[[0, 0, 0, 0, 0, 0]] * len(self.dataset.index)
-            )[:200]
+            )
 
         self.dataset = self.dataset.assign(
             comment_text=self.dataset.comment_text.apply(lambda c: self._sanitize(c))
