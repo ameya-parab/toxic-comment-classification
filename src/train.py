@@ -41,8 +41,7 @@ def run_training(
 
     for epoch in range(epochs):
 
-        running_train_loss = 0.0
-        running_train_examples_count = 0
+        training_loss = []
 
         model.train()
 
@@ -55,30 +54,29 @@ def run_training(
 
             outputs = model(**inputs)
             loss = criterion(outputs, targets)
-            running_train_loss += loss.item()
 
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()
 
-            running_train_examples_count += targets.size(0)
+            training_loss.extend(loss.item())
 
             if batch % 100 == 0:
 
                 print(
                     f"Epoch: [{epoch + 1} / {epochs}], "
                     f"Batch: [{batch + 1} / {len(train_dataloader)}], "
-                    f"Loss: {round(running_train_loss / running_train_examples_count, 4)}"
+                    f"Loss: {round(loss.item(), 4)}"
                 )
 
         # Evaluate Model
         validation_output = evaluate(model=model, dataloader=valid_dataloader)
 
         print(
-            f"Epoch {epoch + 1} Loss: {round(running_train_loss / len(train_dataloader), 4)}, "
+            f"Epoch {epoch + 1} Loss: {round(sum(training_loss) / len(train_dataloader), 4)}, "
             f"Valid Accuracy: {round(validation_output['accuracy'], 2)}, ",
-            f"F1_Micro: {round(validation_output['f1_micro'], 2)}, ",
-            f"F1_Macro: {round(validation_output['f1_macro'], 2)}",
+            f"F1 Micro: {round(validation_output['f1_micro'], 2)}, ",
+            f"F1 Macro: {round(validation_output['f1_macro'], 2)}",
         )
 
         if validation_output[METRICS] > max_metrics:
