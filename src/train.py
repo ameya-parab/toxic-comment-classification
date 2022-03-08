@@ -52,10 +52,10 @@ def run_training(
                 data_key: data_value.to(DEVICE) for data_key, data_value in data.items()
             }
 
+            optimizer.zero_grad()
             outputs = model(**inputs)
             loss = criterion(outputs, targets)
 
-            optimizer.zero_grad()
             loss.backward()
             optimizer.step()
 
