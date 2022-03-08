@@ -51,12 +51,12 @@ def run_training(
             inputs = {
                 data_key: data_value.to(DEVICE) for data_key, data_value in data.items()
             }
-            print("TARGETS", targets.get_device())
+            print("TARGETS", targets.is_cuda)
 
             optimizer.zero_grad()
             
             outputs = model(**inputs)
-            print("OUTPUTS", outputs.get_device())
+            print("OUTPUTS", outputs.is_cuda)
 
             loss = criterion(outputs, targets)
 
