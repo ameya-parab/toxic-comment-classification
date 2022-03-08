@@ -55,7 +55,7 @@ def run_training(
                     if data_key != "targets"
                 }
             )
-            loss = criterion(outputs, data["targets"])
+            loss = criterion(outputs, data["targets"].to(DEVICE))
             running_train_loss += loss.item()
 
             optimizer.zero_grad()
