@@ -33,7 +33,7 @@ def run_training(
 
     model = BertClassifier().to(DEVICE)
 
-    criterion = nn.BCEWithLogitsLoss()
+    criterion = nn.BCEWithLogitsLoss().to(DEVICE)
 
     optimizer = torch.optim.Adam(model.parameters(), lr=lr)
 
