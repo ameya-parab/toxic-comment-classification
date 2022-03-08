@@ -49,13 +49,11 @@ def run_training(
         for batch, data in enumerate(train_dataloader):
 
             targets = data.pop("targets").to(DEVICE)
+            inputs = {
+                data_key: data_value.to(DEVICE) for data_key, data_value in data.items()
+            }
 
-            outputs = model(
-                {
-                    data_key: data_value.to(DEVICE)
-                    for data_key, data_value in data.items()
-                }
-            )
+            outputs = model(**inputs)
             loss = criterion(outputs, targets)
             running_train_loss += loss.item()
 
@@ -102,13 +100,11 @@ def evaluate(
         for _, data in enumerate(dataloader):
 
             targets = data.pop("targets").to(DEVICE)
+            inputs = {
+                data_key: data_value.to(DEVICE) for data_key, data_value in data.items()
+            }
 
-            outputs = model(
-                {
-                    data_key: data_value.to(DEVICE)
-                    for data_key, data_value in data.items()
-                }
-            )
+            outputs = model(**inputs)
 
             model_targets.extend(targets.cpu().detach().numpy().astype(int).tolist())
             batch_outputs.extend(outputs.cpu().detach().numpy().tolist())
