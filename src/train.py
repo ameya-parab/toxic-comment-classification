@@ -51,10 +51,17 @@ def run_training(
             inputs = {
                 data_key: data_value.to(DEVICE) for data_key, data_value in data.items()
             }
+            print("TARGETS", targets.get_device())
 
             optimizer.zero_grad()
+            
             outputs = model(**inputs)
+            print("OUTPUTS", outputs.get_device())
+
             loss = criterion(outputs, targets)
+
+            loss.backward()
+            optimizer.step()
 
             loss_value = loss.item()
             training_loss.extend(loss_value)
@@ -66,9 +73,6 @@ def run_training(
                     f"Batch: [{batch + 1} / {len(train_dataloader)}], "
                     f"Loss: {round(loss_value, 4)}"
                 )
-            
-            loss.backward()
-            optimizer.step()
 
         # Evaluate Model
         validation_output = evaluate(model=model, dataloader=valid_dataloader)
