@@ -48,21 +48,22 @@ def run_training(
 
         for batch, data in enumerate(train_dataloader):
 
+            targets = data.pop("targets").to(DEVICE)
+
             outputs = model(
                 {
                     data_key: data_value.to(DEVICE)
                     for data_key, data_value in data.items()
-                    if data_key != "targets"
                 }
             )
-            loss = criterion(outputs, data["targets"].to(DEVICE))
+            loss = criterion(outputs, targets)
             running_train_loss += loss.item()
 
             optimizer.zero_grad()
             loss.backward()
             optimizer.step()
 
-            running_train_examples_count += data["targets"].size(0)
+            running_train_examples_count += targets.size(0)
 
             if batch % 100 == 0:
 
@@ -100,17 +101,16 @@ def evaluate(
         model_targets, batch_outputs = [], []
         for _, data in enumerate(dataloader):
 
+            targets = data.pop("targets").to(DEVICE)
+
             outputs = model(
                 {
                     data_key: data_value.to(DEVICE)
                     for data_key, data_value in data.items()
-                    if data_key != "targets"
                 }
             )
 
-            model_targets.extend(
-                data["targets"].cpu().detach().numpy().astype(int).tolist()
-            )
+            model_targets.extend(targets.cpu().detach().numpy().astype(int).tolist())
             batch_outputs.extend(outputs.cpu().detach().numpy().tolist())
 
         model_outputs = (np.array(batch_outputs) >= threshold).astype(int).tolist()
