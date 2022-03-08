@@ -56,18 +56,19 @@ def run_training(
             outputs = model(**inputs)
             loss = criterion(outputs, targets)
 
-            loss.backward()
-            optimizer.step()
-
-            training_loss.extend(loss.item())
+            loss_value = loss.item()
+            training_loss.extend(loss_value)
 
             if batch % 100 == 0:
 
                 print(
                     f"Epoch: [{epoch + 1} / {epochs}], "
                     f"Batch: [{batch + 1} / {len(train_dataloader)}], "
-                    f"Loss: {round(loss.item(), 4)}"
+                    f"Loss: {round(loss_value, 4)}"
                 )
+            
+            loss.backward()
+            optimizer.step()
 
         # Evaluate Model
         validation_output = evaluate(model=model, dataloader=valid_dataloader)
