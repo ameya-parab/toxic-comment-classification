@@ -84,7 +84,8 @@ def run_training(
             f"Epoch {epoch + 1} Loss: {round(sum(training_loss) / len(train_dataloader), 4)}, "
             f"Valid Accuracy: {round(validation_output['accuracy'], 2)}, ",
             f"F1 Micro: {round(validation_output['f1_micro'], 2)}, ",
-            f"F1 Macro: {round(validation_output['f1_macro'], 2)}",
+            f"F1 Macro: {round(validation_output['f1_macro'], 2)}" ,
+            f"Hamming Loss: {round(validation_output['hamming_loss'], 4)}",
         )
 
         if validation_output[METRICS] > max_metrics:
@@ -121,10 +122,12 @@ def evaluate(
         accuracy = metrics.accuracy_score(model_targets, model_outputs)
         f1_score_micro = metrics.f1_score(model_targets, model_outputs, average="micro")
         f1_score_macro = metrics.f1_score(model_targets, model_outputs, average="macro")
+        hamming_loss = metrics.hamming_loss(model_targets, model_outputs)
 
         return {
             "accuracy": accuracy,
             "f1_micro": f1_score_micro,
             "f1_macro": f1_score_macro,
+            "hamming_loss": hamming_loss,
             "outputs": model_outputs,
         }
