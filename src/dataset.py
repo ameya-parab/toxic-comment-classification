@@ -140,6 +140,7 @@ def fetch_dataset(random_seed: int, batch_size: int, num_workers: int = 4):
         generator=generator,
         shuffle=True,
         collate_fn=data_collator,
+        pin_memory=True,
     )
     valid_dataloader = torch.utils.data.DataLoader(
         validation_dataset,
@@ -149,6 +150,7 @@ def fetch_dataset(random_seed: int, batch_size: int, num_workers: int = 4):
         generator=generator,
         shuffle=False,
         collate_fn=data_collator,
+        pin_memory=True,
     )
 
     test_dataset = Comments(split="test", indices=":", tokenizer=tokenizer)
@@ -161,6 +163,7 @@ def fetch_dataset(random_seed: int, batch_size: int, num_workers: int = 4):
         generator=generator,
         shuffle=False,
         collate_fn=data_collator,
+        pin_memory=True,
     )
 
     return (train_dataloader, valid_dataloader, test_dataloader)
