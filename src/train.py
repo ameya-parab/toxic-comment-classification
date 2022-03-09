@@ -23,9 +23,10 @@ warnings.filterwarnings("ignore")
 def run_training(
     train_dataloader,
     valid_dataloader,
+    optimizer_parameters,
     epochs,
-    lr,
     random_seed=None,
+    lr_step_parameters={"step_size": 4, "gamma": 0.1},
     logging_interval=500,
 ) -> float:
 
@@ -36,7 +37,9 @@ def run_training(
 
     criterion = nn.BCEWithLogitsLoss().to(DEVICE)
 
-    optimizer = torch.optim.Adam(model.parameters(), lr=lr)
+    optimizer = torch.optim.AdamW(model.parameters(), **optimizer_parameters)
+
+    scheduler = torch.optim.lr_scheduler.StepLR(optimizer, **lr_step_parameters)
 
     max_metrics = 0
 
@@ -87,6 +90,8 @@ def run_training(
 
             model.save_pretrained(MODEL_DIR)
             max_metrics = validation_output[METRICS]
+
+        scheduler.step()
 
     return validation_output
 
