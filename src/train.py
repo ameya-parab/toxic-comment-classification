@@ -77,6 +77,7 @@ def run_training(
                 )
 
         # Evaluate Model
+        print("Running Evaluation...")
         validation_output = evaluate(model=model, dataloader=valid_dataloader)
 
         print(
