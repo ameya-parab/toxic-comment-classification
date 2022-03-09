@@ -21,7 +21,7 @@ DEVICE = "cuda" if torch.cuda.is_available() else "cpu"
 
 MODEL_CHECKPOINT = "distilbert-base-uncased"
 
-METRICS = "f1_micro"
+METRICS = "hamming_loss"
 
 MAX_LEN = 510
 
