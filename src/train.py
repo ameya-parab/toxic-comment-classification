@@ -14,7 +14,7 @@ from .utils import set_random_seed
 
 sys.path.insert(0, os.path.join(os.getcwd(), ".."))
 
-from config import DEVICE, METRICS, MODEL_CHECKPOINT, MODEL_DIR, THRESHOLD
+from config import DEVICE, METRICS, MODEL_CHECKPOINT, MODEL_PATH, THRESHOLD
 
 logging.set_verbosity_error()
 warnings.filterwarnings("ignore")
@@ -42,7 +42,7 @@ def run_training(
 
     scheduler = torch.optim.lr_scheduler.StepLR(optimizer, **lr_step_parameters)
 
-    max_metrics = 0
+    best_metrics = np.Inf
 
     for epoch in range(epochs):
 
@@ -89,14 +89,14 @@ def run_training(
             f"Hamming Loss: {round(validation_output['hamming_loss'], 4)}",
         )
 
-        if validation_output[METRICS] > max_metrics:
+        if validation_output[METRICS] < best_metrics:
 
-            model.save_pretrained(MODEL_DIR)
-            max_metrics = validation_output[METRICS]
+            torch.save(model.state_dict(), MODEL_PATH)
+            best_metrics = validation_output[METRICS]
 
         scheduler.step()
 
-    return validation_output
+    return (validation_output, best_metrics)
 
 
 def evaluate(
