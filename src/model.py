@@ -12,10 +12,10 @@ from config import CACHE_DIR, MODEL_CHECKPOINT
 
 
 class BertClassifier(nn.Module):
-    def __init__(self):
+    def __init__(self, checkpoint_name: str = MODEL_CHECKPOINT):
 
         super(BertClassifier, self).__init__()
-        self.bert = AutoModel.from_pretrained(MODEL_CHECKPOINT, cache_dir=CACHE_DIR)
+        self.bert = AutoModel.from_pretrained(checkpoint_name, cache_dir=CACHE_DIR)
         self.dropout = nn.Dropout(0.3)
         self.fc = nn.Linear(in_features=768, out_features=6)
 
