@@ -5,6 +5,7 @@ import torch
 ROOT_DIR = os.path.dirname(__file__)
 DATA_DIR = os.path.join(ROOT_DIR, "data")
 MODEL_DIR = os.path.join(ROOT_DIR, "model")
+MODEL_PATH = os.path.join(MODEL_DIR, "model.pth")
 STUDY_DIR = os.path.join(ROOT_DIR, "study")
 CACHE_DIR = os.path.join(ROOT_DIR, ".huggingface_cache")
 
