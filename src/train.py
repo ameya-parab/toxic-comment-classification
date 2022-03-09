@@ -26,6 +26,7 @@ def run_training(
     epochs,
     lr,
     random_seed=None,
+    logging_interval=500,
 ) -> float:
 
     if random_seed is not None:
@@ -64,7 +65,7 @@ def run_training(
             loss_value = loss.item()
             training_loss.append(loss_value)
 
-            if batch % 100 == 0:
+            if batch % logging_interval == 0:
 
                 print(
                     f"Epoch: [{epoch + 1} / {epochs}], "
