@@ -14,7 +14,7 @@ from .utils import set_random_seed
 
 sys.path.insert(0, os.path.join(os.getcwd(), ".."))
 
-from config import DEVICE, METRICS, MODEL_DIR, THRESHOLD
+from config import DEVICE, METRICS, MODEL_CHECKPOINT, MODEL_DIR, THRESHOLD
 
 logging.set_verbosity_error()
 warnings.filterwarnings("ignore")
@@ -28,12 +28,13 @@ def run_training(
     random_seed=None,
     lr_step_parameters={"step_size": 4, "gamma": 0.1},
     logging_interval=500,
+    checkpoint_name=MODEL_CHECKPOINT,
 ) -> float:
 
     if random_seed is not None:
         set_random_seed(random_seed=random_seed)
 
-    model = BertClassifier().to(DEVICE)
+    model = BertClassifier(checkpoint_name=checkpoint_name).to(DEVICE)
 
     criterion = nn.BCEWithLogitsLoss().to(DEVICE)
 
@@ -84,7 +85,7 @@ def run_training(
             f"Epoch {epoch + 1} Loss: {round(sum(training_loss) / len(train_dataloader), 4)}, "
             f"Valid Accuracy: {round(validation_output['accuracy'], 2)}, ",
             f"F1 Micro: {round(validation_output['f1_micro'], 2)}, ",
-            f"F1 Macro: {round(validation_output['f1_macro'], 2)}" ,
+            f"F1 Macro: {round(validation_output['f1_macro'], 2)}",
             f"Hamming Loss: {round(validation_output['hamming_loss'], 4)}",
         )
 
