@@ -19,9 +19,13 @@ class BertClassifier(nn.Module):
         self.dropout = nn.Dropout(0.3)
         self.fc = nn.Linear(in_features=768, out_features=6)
 
-    def forward(self, data):
+    def forward(self, input_ids, attention_mask, token_type_ids=None):
 
-        outputs = self.bert(**data)
+        model_inputs = {"input_ids": input_ids, "attention_mask": attention_mask}
+        if token_type_ids is not None:
+            model_inputs.update({"token_type_ids": token_type_ids})
+
+        outputs = self.bert(**model_inputs)
         hidden_state = outputs.last_hidden_state  # (batch, seq_len, features)
         pooled_output = hidden_state[:, 0]
         output = self.dropout(pooled_output)
